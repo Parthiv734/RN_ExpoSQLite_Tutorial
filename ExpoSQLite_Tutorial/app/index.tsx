@@ -9,7 +9,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { fetchItems, insertItem, deleteItem, updateItem, type Item } from "../data/db";
+import { fetchItems, insertItem, deleteItem, updateItem, type Item, sortAZ } from "../data/db";
 import ItemRow from "./components/ItemRow";
 
 export default function App() {
@@ -176,6 +176,14 @@ export default function App() {
       },
     ]);
   };
+  const handleSortAZ = async () => {
+  try {
+    const sorted = await sortAZ(db);
+    setItems(sorted);
+  } catch (err) {
+    console.log("Failed to sort items", err);
+  }
+};
 
 
   return (
@@ -210,6 +218,10 @@ export default function App() {
         title={editingId === null ? "Save Item" : "Update Item"}
         onPress={saveOrUpdate}
       />
+      <Button
+  title="Sort alphabetical"
+  onPress={handleSortAZ}
+/>
       <FlatList
         style={styles.list}
         data={items}
